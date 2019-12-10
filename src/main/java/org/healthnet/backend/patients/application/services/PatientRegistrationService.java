@@ -6,27 +6,27 @@ import org.healthnet.backend.patients.domain.patient.PatientRepository;
 
 import java.util.function.Consumer;
 
-public class PatientRegistrationService implements Consumer<PatientRegistrationService.InputDto> {
+public class PatientRegistrationService implements Consumer<PatientRegistrationService.RegistrationData> {
     private final PatientRepository patientRepository;
-    private final Creator<InputDto, Patient> patientCreation;
+    private final Creator<RegistrationData, Patient> patientCreation;
 
     public PatientRegistrationService(PatientRepository patientRepository,
-                                      Creator<InputDto, Patient> patientCreation) {
+                                      Creator<RegistrationData, Patient> patientCreation) {
         this.patientRepository = patientRepository;
         this.patientCreation = patientCreation;
     }
 
     @Override
-    public void accept(InputDto inputDto) {
-        Patient patient = patientCreation.from(inputDto);
+    public void accept(RegistrationData registrationData) {
+        Patient patient = patientCreation.from(registrationData);
         patientRepository.add(patient);
     }
 
-    public static class InputDto {
+    public static class RegistrationData {
         public final String id;
         public final String fullName;
 
-        public InputDto(String id, String fullName) {
+        public RegistrationData(String id, String fullName) {
             this.id = id;
             this.fullName = fullName;
         }

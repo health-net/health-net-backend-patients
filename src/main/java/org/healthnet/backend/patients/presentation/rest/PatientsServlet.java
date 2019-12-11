@@ -24,9 +24,11 @@ public class PatientsServlet extends HttpServlet {
             patientRegistrationService.accept(registrationData);
             resp.setStatus(201);
         } catch (IllegalArgumentException e) {
-            resp.setStatus(404);
+            resp.setStatus(400);
         } catch (IllegalStateException e) {
             resp.setStatus(409);
+        } catch (RuntimeException e) {
+            resp.setStatus(500);
         }
     }
 }

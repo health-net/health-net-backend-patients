@@ -44,7 +44,7 @@ public class PatientsServletTest {
 
         HttpServletResponseWrapper wrapper = new HttpServletResponseWrapper(response);
         servlet.doPost(request, wrapper);
-        assertEquals(404, response.getStatus());
+        assertEquals(400, response.getStatus());
     }
 
     @Test
@@ -55,5 +55,16 @@ public class PatientsServletTest {
         HttpServletResponseWrapper wrapper = new HttpServletResponseWrapper(response);
         servlet.doPost(request, wrapper);
         assertEquals(409, response.getStatus());
+    }
+
+    @Test
+    void doPost_AnUnknownErrorOccurs_InternalServerErrorResponseHasBeenReturned() throws Exception {
+        when(mapper.map(request)).thenThrow(RuntimeException.class);
+
+        verifyNoInteractions(registrationService);
+
+        HttpServletResponseWrapper wrapper = new HttpServletResponseWrapper(response);
+        servlet.doPost(request, wrapper);
+        assertEquals(500, response.getStatus());
     }
 }

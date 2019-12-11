@@ -1,19 +1,13 @@
 package org.healthnet.backend.patients.presentation.rest;
 
 import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import org.eclipse.jetty.servlet.ServletHolder;
-
-import javax.servlet.Servlet;
+import org.eclipse.jetty.server.handler.ContextHandler;
 
 public class JettyEmbeddedServer {
     private final Server server;
 
-    public JettyEmbeddedServer(int port, Servlet servlet) {
+    public JettyEmbeddedServer(int port, ContextHandler contextHandler) {
         server = new org.eclipse.jetty.server.Server(port);
-        ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
-        ServletHolder servletHolder = new ServletHolder("application", servlet);
-        contextHandler.addServlet(servletHolder, "/");
         server.setHandler(contextHandler);
     }
 

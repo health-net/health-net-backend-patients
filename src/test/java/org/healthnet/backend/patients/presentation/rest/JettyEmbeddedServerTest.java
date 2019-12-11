@@ -1,5 +1,7 @@
 package org.healthnet.backend.patients.presentation.rest;
 
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.healthnet.backend.patients.presentation.rest.JettyEmbeddedServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -20,7 +22,11 @@ public class JettyEmbeddedServerTest {
     private static final int SERVER_PORT = 8080;
     private static final HttpClient client = HttpClient.newHttpClient();
     private static final HttpServlet servlet = new TestServlet();
-    private static final JettyEmbeddedServer server = new JettyEmbeddedServer(SERVER_PORT, servlet);
+    private static final ServletContextHandler servletContextHandler = new ServletContextHandler();
+    static {
+        servletContextHandler.addServlet(new ServletHolder(servlet), "/");
+    }
+    private static final JettyEmbeddedServer server = new JettyEmbeddedServer(SERVER_PORT, servletContextHandler);
 
     @Test
     void Invoke_Root_ResponseHasBeenReturned() throws Exception {

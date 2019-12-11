@@ -9,6 +9,9 @@ public class Patient extends AggregateRoot<Patient> {
     private final FullName fullName;
 
     public Patient(Id id, FullName fullName) {
+        if (Objects.isNull(id) || Objects.isNull(fullName)) {
+            throw new IllegalArgumentException();
+        }
         this.id = id;
         this.fullName = fullName;
     }

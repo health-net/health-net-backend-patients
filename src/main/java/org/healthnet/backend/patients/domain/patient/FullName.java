@@ -8,6 +8,9 @@ public class FullName extends ValueObject<FullName> {
     private final String value;
 
     public FullName(String value) {
+        if(Objects.isNull(value)) {
+            throw new IllegalArgumentException();
+        }
         this.value = value;
     }
 

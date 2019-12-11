@@ -1,4 +1,4 @@
-package org.healthnet.backend.patients;
+package org.healthnet.backend.patients.presentation.rest;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletContextHandler;
@@ -13,7 +13,7 @@ public class JettyEmbeddedServer {
         server = new org.eclipse.jetty.server.Server(port);
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         ServletHolder servletHolder = new ServletHolder("application", servlet);
-        contextHandler.addServlet(servletHolder, "/");
+        contextHandler.addServlet(servletHolder, "/patients");
         server.setHandler(contextHandler);
     }
 

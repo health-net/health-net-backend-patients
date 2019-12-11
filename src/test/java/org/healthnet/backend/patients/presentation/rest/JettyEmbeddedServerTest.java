@@ -1,6 +1,6 @@
-package org.healthnet.backend.patients;
+package org.healthnet.backend.patients.presentation.rest;
 
-import org.healthnet.backend.patients.JettyEmbeddedServer;
+import org.healthnet.backend.patients.presentation.rest.JettyEmbeddedServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

@@ -13,7 +13,7 @@ public class JettyEmbeddedServer {
         server = new org.eclipse.jetty.server.Server(port);
         ServletContextHandler contextHandler = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         ServletHolder servletHolder = new ServletHolder("application", servlet);
-        contextHandler.addServlet(servletHolder, "/patients");
+        contextHandler.addServlet(servletHolder, "/");
         server.setHandler(contextHandler);
     }
 

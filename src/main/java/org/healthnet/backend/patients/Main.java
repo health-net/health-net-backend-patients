@@ -1,5 +1,7 @@
 package org.healthnet.backend.patients;
 
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import org.eclipse.jetty.servlet.ServletHolder;
 import org.healthnet.backend.patients.application.services.PatientRegistrationService;
 import org.healthnet.backend.patients.domain.patient.FullName;
 import org.healthnet.backend.patients.domain.patient.Id;
@@ -23,7 +25,10 @@ public class Main {
                 new FullName(input.fullName)
         ));
         HttpServlet patientsServlet = new PatientsServlet(patientRegistrationService, new RegistrationDataMapper());
-        JettyEmbeddedServer server = new JettyEmbeddedServer(8080, patientsServlet);
+        int port = Integer.parseInt(System.getenv().getOrDefault("HEALTHNET_PORT", "8080"));
+        ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
+        servletContextHandler.addServlet(new ServletHolder(patientsServlet), "/patients");
+        JettyEmbeddedServer server = new JettyEmbeddedServer(port, servletContextHandler);
         try {
             server.start();
         } catch (Exception e) {

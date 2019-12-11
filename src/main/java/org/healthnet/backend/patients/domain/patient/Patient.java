@@ -13,6 +13,14 @@ public class Patient extends AggregateRoot<Patient> {
         this.fullName = fullName;
     }
 
+    public Id getId() {
+        return id;
+    }
+
+    public FullName getFullName() {
+        return fullName;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

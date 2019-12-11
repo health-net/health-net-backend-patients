@@ -1,0 +1,4 @@
+CREATE TABLE `patients` (
+id VARCHAR(40) PRIMARY KEY,
+fullName VARCHAR(500)
+);

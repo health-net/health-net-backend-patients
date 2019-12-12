@@ -3,8 +3,6 @@ package org.healthnet.backend.patients;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.healthnet.backend.patients.application.services.PatientRegistrationService;
-import org.healthnet.backend.patients.domain.patient.FullName;
-import org.healthnet.backend.patients.domain.patient.Id;
 import org.healthnet.backend.patients.domain.patient.Patient;
 import org.healthnet.backend.patients.domain.patient.PatientRepository;
 import org.healthnet.backend.patients.infrastructure.persistence.PatientPersistenceRepository;
@@ -21,8 +19,8 @@ public class Main {
         DataSource dataSource = new PatientsDataSource();
         PatientRepository patientRepository = new PatientPersistenceRepository(dataSource);
         PatientRegistrationService patientRegistrationService = new PatientRegistrationService(patientRepository, input -> new Patient(
-                new Id(input.id),
-                new FullName(input.fullName)
+                new Patient.Id(input.id),
+                new Patient.FullName(input.fullName)
         ));
         HttpServlet patientsServlet = new PatientsServlet(patientRegistrationService, new RegistrationDataMapper());
         int port = Integer.parseInt(System.getenv().getOrDefault("HEALTHNET_PORT", "8080"));

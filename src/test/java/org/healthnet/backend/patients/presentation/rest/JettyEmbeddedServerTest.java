@@ -2,7 +2,6 @@ package org.healthnet.backend.patients.presentation.rest;
 
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
-import org.healthnet.backend.patients.presentation.rest.JettyEmbeddedServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

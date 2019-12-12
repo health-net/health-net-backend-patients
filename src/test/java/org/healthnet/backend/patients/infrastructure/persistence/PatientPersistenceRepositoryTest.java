@@ -1,15 +1,12 @@
 package org.healthnet.backend.patients.infrastructure.persistence;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
-import org.healthnet.backend.patients.domain.patient.FullName;
-import org.healthnet.backend.patients.domain.patient.Id;
 import org.healthnet.backend.patients.domain.patient.Patient;
 import org.healthnet.backend.patients.domain.patient.PatientRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.util.Map;
 
@@ -45,8 +42,8 @@ public class PatientPersistenceRepositoryTest {
 
     private Patient aPatient() {
         return new Patient(
-                new Id("cde63ec7-586b-4f31-94ac-6a3b20f2e39d"),
-                new FullName("John Riley")
+                new Patient.Id("cde63ec7-586b-4f31-94ac-6a3b20f2e39d"),
+                new Patient.FullName("John Riley")
         );
     }
 

@@ -9,7 +9,7 @@ import org.healthnet.backend.patients.infrastructure.persistence.PatientPersiste
 import org.healthnet.backend.patients.infrastructure.persistence.PatientsDataSource;
 import org.healthnet.backend.patients.presentation.rest.JettyEmbeddedServer;
 import org.healthnet.backend.patients.presentation.rest.PatientsServlet;
-import org.healthnet.backend.patients.presentation.rest.RegistrationDataMapper;
+import org.healthnet.backend.patients.presentation.rest.RegistrationDataMapping;
 
 import javax.servlet.http.HttpServlet;
 import javax.sql.DataSource;
@@ -22,7 +22,7 @@ public class Main {
                 new Patient.Id(input.id),
                 new Patient.FullName(input.fullName)
         ));
-        HttpServlet patientsServlet = new PatientsServlet(patientRegistrationService, new RegistrationDataMapper());
+        HttpServlet patientsServlet = new PatientsServlet(patientRegistrationService, new RegistrationDataMapping());
         int port = Integer.parseInt(System.getenv().getOrDefault("HEALTHNET_PORT", "8080"));
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         servletContextHandler.addServlet(new ServletHolder(patientsServlet), "/patients");

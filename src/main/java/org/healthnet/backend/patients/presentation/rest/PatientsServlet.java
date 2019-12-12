@@ -6,21 +6,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.function.Function;
 
 public class PatientsServlet extends HttpServlet {
     private final PatientRegistrationService patientRegistrationService;
-    private final Mapper<HttpServletRequest, PatientRegistrationService.RegistrationData> mapper;
+    private final Function<HttpServletRequest, PatientRegistrationService.RegistrationData> registrationDataMapping;
 
     public PatientsServlet(PatientRegistrationService patientRegistrationService,
-                           Mapper<HttpServletRequest, PatientRegistrationService.RegistrationData> assembler) {
+                           Function<HttpServletRequest, PatientRegistrationService.RegistrationData> registrationDataMapping) {
         this.patientRegistrationService = patientRegistrationService;
-        this.mapper = assembler;
+        this.registrationDataMapping = registrationDataMapping;
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         try {
-            PatientRegistrationService.RegistrationData registrationData = mapper.map(req);
+            PatientRegistrationService.RegistrationData registrationData = registrationDataMapping.apply(req);
             patientRegistrationService.accept(registrationData);
             resp.setStatus(201);
         } catch (IllegalArgumentException e) {

@@ -1,24 +1,24 @@
 package org.healthnet.backend.patients.application.services;
 
-import org.healthnet.backend.patients.application.shared.Creator;
 import org.healthnet.backend.patients.domain.patient.Patient;
 import org.healthnet.backend.patients.domain.patient.PatientRepository;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class PatientRegistrationService implements Consumer<PatientRegistrationService.RegistrationData> {
     private final PatientRepository patientRepository;
-    private final Creator<RegistrationData, Patient> patientCreation;
+    private final Function<RegistrationData, Patient> patientMapping;
 
     public PatientRegistrationService(PatientRepository patientRepository,
-                                      Creator<RegistrationData, Patient> patientCreation) {
+                                      Function<RegistrationData, Patient> patientMapping) {
         this.patientRepository = patientRepository;
-        this.patientCreation = patientCreation;
+        this.patientMapping = patientMapping;
     }
 
     @Override
     public void accept(RegistrationData registrationData) {
-        Patient patient = patientCreation.from(registrationData);
+        Patient patient = patientMapping.apply(registrationData);
         patientRepository.add(patient);
     }
 

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
 import java.io.IOException;
+import java.util.function.Function;
 
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,19 +17,19 @@ import static org.junit.jupiter.api.Assertions.*;
 public class PatientsServletTest {
     private final static HttpServletRequest request = mock(HttpServletRequest.class);
     private final static HttpServletResponse response = new MockHttpServletResponse();
-    private final static Mapper<HttpServletRequest, PatientRegistrationService.RegistrationData> mapper = mock(Mapper.class);
+    private final static Function<HttpServletRequest, PatientRegistrationService.RegistrationData> registrationDataMapping = mock(Function.class);
     private final static PatientRegistrationService.RegistrationData registrationData = mock(PatientRegistrationService.RegistrationData.class);
     private final static PatientRegistrationService registrationService = mock(PatientRegistrationService.class);
-    private final static PatientsServlet servlet = new PatientsServlet(registrationService, mapper);
+    private final static PatientsServlet servlet = new PatientsServlet(registrationService, registrationDataMapping);
 
     @BeforeEach
     void resetMocks() {
-        reset(request, mapper, registrationData, registrationService);
+        reset(request, registrationDataMapping, registrationData, registrationService);
     }
 
     @Test
-    void doPost_SuccessfulExecution_CreatedResponseHasBeenReturned() throws IOException {
-        when(mapper.map(request)).thenReturn(registrationData);
+    void doPost_SuccessfulExecution_CreatedResponseHasBeenReturned() {
+        when(registrationDataMapping.apply(request)).thenReturn(registrationData);
         doNothing().when(registrationService).accept(registrationData);
 
         HttpServletResponseWrapper wrapper = new HttpServletResponseWrapper(response);
@@ -37,8 +38,8 @@ public class PatientsServletTest {
     }
 
     @Test
-    void doPost_InvalidRequestBodyValues_BadRequestResponseHasBeenReturned() throws IOException {
-        when(mapper.map(request)).thenThrow(IllegalArgumentException.class);
+    void doPost_InvalidRequestBodyValues_BadRequestResponseHasBeenReturned() {
+        when(registrationDataMapping.apply(request)).thenThrow(IllegalArgumentException.class);
 
         verifyNoInteractions(registrationService);
 
@@ -48,8 +49,8 @@ public class PatientsServletTest {
     }
 
     @Test
-    void doPost_AlreadyRegisteredPatient_ConflictResponseHasBeenReturned() throws IOException {
-        when(mapper.map(request)).thenReturn(registrationData);
+    void doPost_AlreadyRegisteredPatient_ConflictResponseHasBeenReturned() {
+        when(registrationDataMapping.apply(request)).thenReturn(registrationData);
         doThrow(IllegalStateException.class).when(registrationService).accept(registrationData);
 
         HttpServletResponseWrapper wrapper = new HttpServletResponseWrapper(response);
@@ -58,8 +59,8 @@ public class PatientsServletTest {
     }
 
     @Test
-    void doPost_AnUnknownErrorOccurs_InternalServerErrorResponseHasBeenReturned() throws Exception {
-        when(mapper.map(request)).thenThrow(RuntimeException.class);
+    void doPost_AnUnknownErrorOccurs_InternalServerErrorResponseHasBeenReturned() {
+        when(registrationDataMapping.apply(request)).thenThrow(RuntimeException.class);
 
         verifyNoInteractions(registrationService);
 

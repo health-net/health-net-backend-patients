@@ -13,12 +13,13 @@ import org.healthnet.backend.patients.presentation.rest.RegistrationDataMapping;
 
 import javax.servlet.http.HttpServlet;
 import javax.sql.DataSource;
+import java.util.function.Consumer;
 
 public class Main {
     public static void main(String[] args) {
         DataSource dataSource = new PatientsDataSource();
         PatientRepository patientRepository = new PatientPersistenceRepository(dataSource);
-        PatientRegistrationService patientRegistrationService = new PatientRegistrationService(patientRepository, input -> new Patient(
+        Consumer<PatientRegistrationService.RegistrationData> patientRegistrationService = new PatientRegistrationService(patientRepository, input -> new Patient(
                 new Patient.Id(input.id),
                 new Patient.FullName(input.fullName)
         ));

@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
-import java.io.IOException;
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 import static org.mockito.Mockito.*;
@@ -19,7 +19,7 @@ public class PatientsServletTest {
     private final static HttpServletResponse response = new MockHttpServletResponse();
     private final static Function<HttpServletRequest, PatientRegistrationService.RegistrationData> registrationDataMapping = mock(Function.class);
     private final static PatientRegistrationService.RegistrationData registrationData = mock(PatientRegistrationService.RegistrationData.class);
-    private final static PatientRegistrationService registrationService = mock(PatientRegistrationService.class);
+    private final static Consumer<PatientRegistrationService.RegistrationData> registrationService = mock(PatientRegistrationService.class);
     private final static PatientsServlet servlet = new PatientsServlet(registrationService, registrationDataMapping);
 
     @BeforeEach

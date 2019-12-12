@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class PatientPersistenceRepository implements PatientRepository {
     private final DataSource dataSource;
@@ -42,6 +43,22 @@ public class PatientPersistenceRepository implements PatientRepository {
                 patients.add(getPatientFromResultSet(resultSet));
             }
             return patients;
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    @Override
+    public Patient get(Patient.Id patientId) {
+        try (var connection = dataSource.getConnection()) {
+            var statement = connection.prepareStatement("SELECT * FROM `patients` WHERE id=?");
+            statement.setString(1, patientId.getValue());
+            ResultSet resultSet = statement.executeQuery();
+            if(!resultSet.next()) {
+                throw new NoSuchElementException("Patient not found");
+            } else {
+                return getPatientFromResultSet(resultSet);
+            }
         } catch (SQLException e) {
             throw new RuntimeException();
         }

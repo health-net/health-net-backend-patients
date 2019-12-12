@@ -10,6 +10,7 @@ import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,6 +52,22 @@ public class PatientPersistenceRepositoryTest {
         List<Patient> patients = patientRepository.getAll();
         assertTrue(patients.contains(p1));
         assertTrue(patients.contains(p2));
+    }
+
+    @Test
+    void GetOneById_SuccessfulExecution_PatientHasBeenReturned() throws Exception {
+        Patient p1 = aRandomPatient();
+        insert(p1);
+        Patient patient = patientRepository.get(p1.getId());
+        assertEquals(p1, patient);
+    }
+
+    @Test
+    void GetOneById_PatientNotExist_NoSuchElementExceptionHasBeenThrown() throws Exception {
+        assertThrows(NoSuchElementException.class, () -> {
+            Patient notAddedPatient = aRandomPatient();
+            patientRepository.get(notAddedPatient.getId());
+        });
     }
 
     private void insert(Patient patient) throws Exception {

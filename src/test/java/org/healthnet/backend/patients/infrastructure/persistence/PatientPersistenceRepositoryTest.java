@@ -8,7 +8,9 @@ import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -24,7 +26,7 @@ public class PatientPersistenceRepositoryTest {
 
     @Test
     void Add_SuccessfulExecution_PatientHasBeenStored() throws Exception {
-        Patient patient = aPatient();
+        Patient patient = aRandomPatient();
         patientRepository.add(patient);
         var statement = dataSource.getConnection().prepareStatement("SELECT * FROM `patients` WHERE id=?");
         statement.setString(1, patient.getId().getValue());
@@ -35,14 +37,33 @@ public class PatientPersistenceRepositoryTest {
 
     @Test
     void Add_AlreadyStoredPatient_IllegalStateExceptionHasBeenThrown() {
-        Patient patient = aPatient();
+        Patient patient = aRandomPatient();
         patientRepository.add(patient);
         assertThrows(IllegalStateException.class, () -> patientRepository.add(patient));
     }
 
-    private Patient aPatient() {
+    @Test
+    void GetAll_SuccessfulExecution_PatientListHasBeenReturned() throws Exception {
+        Patient p1 = aRandomPatient();
+        Patient p2 = aRandomPatient();
+        insert(p1);
+        insert(p2);
+        List<Patient> patients = patientRepository.getAll();
+        assertTrue(patients.contains(p1));
+        assertTrue(patients.contains(p2));
+    }
+
+    private void insert(Patient patient) throws Exception {
+        var connection = dataSource.getConnection();
+        var statement = connection.prepareStatement("INSERT INTO `patients` VALUES (?, ?)");
+        statement.setString(1, patient.getId().getValue());
+        statement.setString(2, patient.getFullName().getValue());
+        statement.execute();
+    }
+
+    private Patient aRandomPatient() {
         return new Patient(
-                new Patient.Id("cde63ec7-586b-4f31-94ac-6a3b20f2e39d"),
+                new Patient.Id(UUID.randomUUID().toString()),
                 new Patient.FullName("John Riley")
         );
     }

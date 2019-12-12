@@ -4,7 +4,10 @@ import org.healthnet.backend.patients.domain.patient.Patient;
 import org.healthnet.backend.patients.domain.patient.PatientRepository;
 
 import javax.sql.DataSource;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.LinkedList;
+import java.util.List;
 
 public class PatientPersistenceRepository implements PatientRepository {
     private final DataSource dataSource;
@@ -27,5 +30,27 @@ public class PatientPersistenceRepository implements PatientRepository {
                 throw new RuntimeException();
             }
         }
+    }
+
+    @Override
+    public List<Patient> getAll() {
+        try (var connection = dataSource.getConnection()) {
+            var statement = connection.prepareStatement("SELECT * FROM `patients`;");
+            ResultSet resultSet = statement.executeQuery();
+            List<Patient> patients = new LinkedList<>();
+            while(resultSet.next()) {
+                patients.add(getPatientFromResultSet(resultSet));
+            }
+            return patients;
+        } catch (SQLException e) {
+            throw new RuntimeException();
+        }
+    }
+
+    private Patient getPatientFromResultSet(ResultSet resultSet) throws SQLException {
+        return new Patient(
+                new Patient.Id(resultSet.getString("id")),
+                new Patient.FullName(resultSet.getString("fullName"))
+        );
     }
 }

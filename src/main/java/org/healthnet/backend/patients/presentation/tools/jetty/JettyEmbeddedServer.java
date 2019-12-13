@@ -1,4 +1,4 @@
-package org.healthnet.backend.patients.presentation.rest;
+package org.healthnet.backend.patients.presentation.tools.jetty;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;

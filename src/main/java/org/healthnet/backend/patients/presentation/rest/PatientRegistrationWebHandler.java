@@ -1,21 +1,21 @@
 package org.healthnet.backend.patients.presentation.rest;
 
-import org.healthnet.backend.patients.application.services.PatientRegistrationService;
+import org.healthnet.backend.patients.application.dtos.PatientRegistrationDto;
 
 import java.util.function.Consumer;
 
 public class PatientRegistrationWebHandler implements WebHandler {
-    private final Consumer<PatientRegistrationService.RegistrationData> patientRegistrationService;
+    private final Consumer<PatientRegistrationDto> patientRegistrationService;
 
-    public PatientRegistrationWebHandler(Consumer<PatientRegistrationService.RegistrationData> patientRegistrationService) {
+    public PatientRegistrationWebHandler(Consumer<PatientRegistrationDto> patientRegistrationService) {
         this.patientRegistrationService = patientRegistrationService;
     }
 
     @Override
     public WebResponse handle(WebRequest webRequest) {
         try {
-            PatientRegistrationService.RegistrationData registrationData = webRequest.deserializeBody(PatientRegistrationService.RegistrationData.class);
-            patientRegistrationService.accept(registrationData);
+            PatientRegistrationDto patientRegistrationDto = webRequest.deserializeBody(PatientRegistrationDto.class);
+            patientRegistrationService.accept(patientRegistrationDto);
             return new WebResponse(WebResponse.Status.CREATED);
         } catch (IllegalArgumentException e) {
             return new WebResponse(WebResponse.Status.BAD_REQUEST);

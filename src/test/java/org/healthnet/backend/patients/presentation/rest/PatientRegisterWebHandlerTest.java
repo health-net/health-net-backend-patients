@@ -1,5 +1,6 @@
 package org.healthnet.backend.patients.presentation.rest;
 
+import org.healthnet.backend.patients.application.dtos.PatientSummaryDto;
 import org.healthnet.backend.patients.application.services.PatientRegisterService;
 import org.junit.jupiter.api.Test;
 
@@ -11,8 +12,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PatientRegisterWebHandlerTest {
     private final static WebRequest webRequest = mock(WebRequest.class);
-    private final static List<PatientRegisterService.PatientSummaryData> summaries = mock(List.class);
-    private final static Function<List<PatientRegisterService.PatientSummaryData>, String> toJson = mock(Function.class);
+    private final static List<PatientSummaryDto> summaries = mock(List.class);
+    private final static Function<List<PatientSummaryDto>, String> toJson = mock(Function.class);
     private final static PatientRegisterService patientRegisterService = mock(PatientRegisterService.class);
     private final static PatientRegisterWebHandler patientRegisterWebHandler = new PatientRegisterWebHandler(
             patientRegisterService,

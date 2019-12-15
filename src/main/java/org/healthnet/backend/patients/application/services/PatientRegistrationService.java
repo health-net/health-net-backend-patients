@@ -1,34 +1,25 @@
 package org.healthnet.backend.patients.application.services;
 
+import org.healthnet.backend.patients.application.dtos.PatientRegistrationDto;
 import org.healthnet.backend.patients.domain.patient.Patient;
 import org.healthnet.backend.patients.domain.patient.PatientRepository;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-public class PatientRegistrationService implements Consumer<PatientRegistrationService.RegistrationData> {
+public class PatientRegistrationService implements Consumer<PatientRegistrationDto> {
     private final PatientRepository patientRepository;
-    private final Function<RegistrationData, Patient> patientMapping;
+    private final Function<PatientRegistrationDto, Patient> patientCreation;
 
     public PatientRegistrationService(PatientRepository patientRepository,
-                                      Function<RegistrationData, Patient> patientMapping) {
+                                      Function<PatientRegistrationDto, Patient> patientCreation) {
         this.patientRepository = patientRepository;
-        this.patientMapping = patientMapping;
+        this.patientCreation = patientCreation;
     }
 
     @Override
-    public void accept(RegistrationData registrationData) {
-        Patient patient = patientMapping.apply(registrationData);
+    public void accept(PatientRegistrationDto patientRegistrationDto) {
+        Patient patient = patientCreation.apply(patientRegistrationDto);
         patientRepository.add(patient);
-    }
-
-    public static class RegistrationData {
-        public final String id;
-        public final String fullName;
-
-        public RegistrationData(String id, String fullName) {
-            this.id = id;
-            this.fullName = fullName;
-        }
     }
 }

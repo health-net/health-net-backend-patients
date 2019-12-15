@@ -1,45 +1,28 @@
 package org.healthnet.backend.patients.application.services;
 
+import org.healthnet.backend.patients.application.dtos.PatientDetailDto;
 import org.healthnet.backend.patients.domain.patient.Patient;
 import org.healthnet.backend.patients.domain.patient.PatientRepository;
 
 import java.util.function.Function;
 
-public class PatientDetailService implements Function<PatientDetailService.PatientIdRequest, PatientDetailService.PatientDetailData> {
+public class PatientDetailService implements Function<String, PatientDetailDto> {
     private final PatientRepository patientRepository;
-    private final Function<PatientIdRequest, Patient.Id> mappingPatientId;
-    private final Function<Patient, PatientDetailData> mappingPatientDetailData;
+    private final Function<String, Patient.Id> patientIdCreation;
+    private final Function<Patient, PatientDetailDto> patientDetailDtoCreation;
 
     public PatientDetailService(PatientRepository patientRepository,
-                                Function<PatientIdRequest, Patient.Id> mappingPatientId,
-                                Function<Patient, PatientDetailData> mappingPatientDetailData) {
+                                Function<String, Patient.Id> patientIdCreation,
+                                Function<Patient, PatientDetailDto> patientDetailDtoCreation) {
         this.patientRepository = patientRepository;
-        this.mappingPatientId = mappingPatientId;
-        this.mappingPatientDetailData = mappingPatientDetailData;
+        this.patientIdCreation = patientIdCreation;
+        this.patientDetailDtoCreation = patientDetailDtoCreation;
     }
 
     @Override
-    public PatientDetailData apply(PatientIdRequest patientIdRequest) {
-        Patient.Id patientId = mappingPatientId.apply(patientIdRequest);
+    public PatientDetailDto apply(String id) {
+        Patient.Id patientId = patientIdCreation.apply(id);
         Patient patient = patientRepository.get(patientId);
-        return mappingPatientDetailData.apply(patient);
-    }
-
-    public static class PatientIdRequest {
-        public final String id;
-
-        public PatientIdRequest(String id) {
-            this.id = id;
-        }
-    }
-
-    public static class PatientDetailData {
-        public final String id;
-        public final String fullName;
-
-        public PatientDetailData(String id, String fullName) {
-            this.id = id;
-            this.fullName = fullName;
-        }
+        return patientDetailDtoCreation.apply(patient);
     }
 }

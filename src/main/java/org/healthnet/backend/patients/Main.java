@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.mysql.cj.jdbc.MysqlDataSource;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
+import org.healthnet.backend.patients.application.dtos.PatientSummaryDto;
+import org.healthnet.backend.patients.application.dtos.PatientRegistrationDto;
 import org.healthnet.backend.patients.application.services.PatientRegisterService;
 import org.healthnet.backend.patients.application.services.PatientRegistrationService;
 import org.healthnet.backend.patients.domain.patient.Patient;
@@ -18,7 +20,6 @@ import org.healthnet.backend.patients.presentation.tools.jetty.PatientsServlet;
 import javax.servlet.http.HttpServlet;
 import java.util.List;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class Main {
@@ -28,11 +29,11 @@ public class Main {
         dataSource.setUser(System.getenv().getOrDefault("HEALTHNET_DB_USER", "root"));
         dataSource.setPassword(System.getenv().getOrDefault("HEALTHNET_DB_PASSWORD", "root"));
         PatientRepository patientRepository = new PatientPersistenceRepository(dataSource);
-        Consumer<PatientRegistrationService.RegistrationData> patientRegistrationService = new PatientRegistrationService(patientRepository, input -> new Patient(
+        Consumer<PatientRegistrationDto> patientRegistrationService = new PatientRegistrationService(patientRepository, input -> new Patient(
                 new Patient.Id(input.id),
                 new Patient.FullName(input.fullName)
         ));
-        Supplier<List<PatientRegisterService.PatientSummaryData>> patientRegisterService = new PatientRegisterService(patientRepository, patient -> new PatientRegisterService.PatientSummaryData(
+        Supplier<List<PatientSummaryDto>> patientRegisterService = new PatientRegisterService(patientRepository, patient -> new PatientSummaryDto(
                 patient.getId().getValue(),
                 patient.getFullName().getValue()
         ));

@@ -4,33 +4,23 @@ import org.healthnet.backend.patients.presentation.rest.WebHandler;
 import org.healthnet.backend.patients.presentation.rest.WebRequest;
 import org.healthnet.backend.patients.presentation.rest.WebResponse;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class PatientsServlet extends HttpServlet {
-    private final WebHandler patientRegistrationWebHandler;
-    private final WebHandler patientRegisterWebHandler;
+    private final WebHandler router;
 
-    public PatientsServlet(WebHandler patientRegistrationWebHandler, WebHandler patientRegisterWebHandler) {
-        this.patientRegistrationWebHandler = patientRegistrationWebHandler;
-        this.patientRegisterWebHandler = patientRegisterWebHandler;
+    public PatientsServlet(WebHandler router) {
+        this.router = router;
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        WebRequest webRequest = new WebRequest(req.getReader());
-        WebResponse webResponse = patientRegistrationWebHandler.handle(webRequest);
-        resp.setContentType("application/json");
-        resp.setStatus(webResponse.getStatusCode());
-        resp.getWriter().write(webResponse.getBodyContent());
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        WebRequest webRequest = new WebRequest(req.getReader());
-        WebResponse webResponse = patientRegisterWebHandler.handle(webRequest);
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        WebRequest webRequest = new WebRequest(req.getMethod(), req.getPathInfo(), req.getReader());
+        WebResponse webResponse = router.handle(webRequest);
         resp.setContentType("application/json");
         resp.setStatus(webResponse.getStatusCode());
         resp.getWriter().write(webResponse.getBodyContent());

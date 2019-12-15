@@ -11,15 +11,28 @@ import java.io.IOException;
 
 public class PatientsServlet extends HttpServlet {
     private final WebHandler patientRegistrationWebHandler;
+    private final WebHandler patientRegisterWebHandler;
 
-    public PatientsServlet(WebHandler patientRegistrationWebHandler) {
+    public PatientsServlet(WebHandler patientRegistrationWebHandler, WebHandler patientRegisterWebHandler) {
         this.patientRegistrationWebHandler = patientRegistrationWebHandler;
+        this.patientRegisterWebHandler = patientRegisterWebHandler;
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         WebRequest webRequest = new WebRequest(req.getReader());
         WebResponse webResponse = patientRegistrationWebHandler.handle(webRequest);
+        resp.setContentType("application/json");
         resp.setStatus(webResponse.getStatusCode());
+        resp.getWriter().write(webResponse.getBodyContent());
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        WebRequest webRequest = new WebRequest(req.getReader());
+        WebResponse webResponse = patientRegisterWebHandler.handle(webRequest);
+        resp.setContentType("application/json");
+        resp.setStatus(webResponse.getStatusCode());
+        resp.getWriter().write(webResponse.getBodyContent());
     }
 }

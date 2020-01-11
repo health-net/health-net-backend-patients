@@ -7,7 +7,7 @@ public class JettyEmbeddedServer {
     private final Server server;
 
     public JettyEmbeddedServer(int port, ContextHandler contextHandler) {
-        server = new org.eclipse.jetty.server.Server(port);
+        server = new Server(port);
         server.setHandler(contextHandler);
     }
 

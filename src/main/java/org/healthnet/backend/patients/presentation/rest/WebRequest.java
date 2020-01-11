@@ -12,7 +12,7 @@ public class WebRequest {
 
     public WebRequest(String method, String path, Reader reader) {
         this.method = method;
-        this.path = path;
+        this.path = (path != null) ? path : "";
         this.reader = reader;
     }
 

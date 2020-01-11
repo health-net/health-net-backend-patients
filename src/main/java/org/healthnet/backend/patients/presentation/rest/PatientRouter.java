@@ -13,13 +13,13 @@ public class PatientRouter implements WebHandler {
 
     @Override
     public WebResponse handle(WebRequest webRequest) {
-        if (webRequest.getPath().matches("(/patients)(/?)$")) {
+        if (webRequest.getPath().matches("(/?)$")) {
             if (webRequest.getMethod().equals("POST")) {
                 return patientRegistrationWebHandler.handle(webRequest);
             } else if (webRequest.getMethod().equals("GET")) {
                 return patientRegisterWebHandler.handle(webRequest);
             }
-        } else if (webRequest.getPath().matches("(/patients/)(.+)(/?)$") && webRequest.getMethod().equals("GET")) {
+        } else if (webRequest.getPath().matches("(/?)(.+)(/?)$") && webRequest.getMethod().equals("GET")) {
             return patientDetailWebHandler.handle(webRequest);
         }
         return new WebResponse(WebResponse.Status.NOT_FOUND);

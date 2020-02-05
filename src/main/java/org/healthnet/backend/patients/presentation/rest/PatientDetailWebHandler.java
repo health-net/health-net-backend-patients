@@ -17,7 +17,7 @@ public class PatientDetailWebHandler implements WebHandler {
     @Override
     public WebResponse handle(WebRequest webRequest) {
         try {
-            String id = webRequest.getParameter(1);
+            String id = webRequest.getParameter(0);
             PatientDetailDto dto = service.apply(id);
             String serialized = serialization.apply(dto);
             return new WebResponse(WebResponse.Status.OK, serialized);

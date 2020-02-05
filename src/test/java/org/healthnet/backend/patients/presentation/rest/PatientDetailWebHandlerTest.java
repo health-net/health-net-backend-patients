@@ -28,7 +28,7 @@ public class PatientDetailWebHandlerTest {
         String expectedContent = "expectedContent";
         String id = "";
 
-        when(webRequest.getParameter(1)).thenReturn(id);
+        when(webRequest.getParameter(0)).thenReturn(id);
         when(patientDetailService.apply(id)).thenReturn(dto);
         when(serialization.apply(dto)).thenReturn(expectedContent);
 
@@ -41,7 +41,7 @@ public class PatientDetailWebHandlerTest {
     void Handle_PatientNotFound_NotFoundResponseHasBeenReturned() {
         String id = "";
 
-        when(webRequest.getParameter(1)).thenReturn(id);
+        when(webRequest.getParameter(0)).thenReturn(id);
         when(patientDetailService.apply(id)).thenThrow(NoSuchElementException.class);
 
         WebResponse webResponse = patientDetailWebHandler.handle(webRequest);
@@ -53,7 +53,7 @@ public class PatientDetailWebHandlerTest {
     void Handle_UnknownErrorOccurs_InternalServerErrorHasBeenReturned() {
         String id = "";
 
-        when(webRequest.getParameter(1)).thenReturn(id);
+        when(webRequest.getParameter(0)).thenReturn(id);
         when(patientDetailService.apply(id)).thenThrow(RuntimeException.class);
 
         WebResponse webResponse = patientDetailWebHandler.handle(webRequest);

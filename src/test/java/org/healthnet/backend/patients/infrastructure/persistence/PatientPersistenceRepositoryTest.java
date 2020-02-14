@@ -89,8 +89,8 @@ public class PatientPersistenceRepositoryTest {
         public TestDataSource() {
             setDatabaseName("healthnet_patients_test");
             Map<String, String> env = System.getenv();
-            setUser(env.getOrDefault("HEALTHNET_DB_USER", "root"));
-            setPassword(env.getOrDefault("HEALTHNET_DB_PASSWORD", "root"));
+            setUser(env.getOrDefault("DB_USER", "root"));
+            setPassword(env.getOrDefault("DB_PASSWORD", "root"));
         }
     }
 }

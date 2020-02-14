@@ -8,7 +8,7 @@ public class PatientsDataSource extends MysqlDataSource {
     public PatientsDataSource() {
         setDatabaseName("healthnet_patients");
         Map<String, String> env = System.getenv();
-        setUser(env.getOrDefault("HEALTHNET_DB_USER", "root"));
-        setPassword(env.getOrDefault("HEALTHNET_DB_PASSWORD", "root"));
+        setUser(env.getOrDefault("DB_USER", "root"));
+        setPassword(env.getOrDefault("DB_PASSWORD", "root"));
     }
 }

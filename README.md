@@ -9,26 +9,29 @@ These instructions will get you a copy of the project up and running on your loc
 ### Prerequisites
 
 ```
-node.js
+Java 12 (or higher)
 ```
 
 ### Installing
 
-Install npm project dependencies
 ```
-npm install
+mvn install
 ```
 
 ## Deployment
 
-1. Set up a MySQL database on your machine
+1. Set up MySql database
 2. Run create-local-databases.sh located in src/main/resources/scripts
-3. Set environment variables inline and run service
+3. Set environment variables
+4. Run service
+```
+java -jar target/patients-[version]-jar-with-dependencies.jar
+```
 
 ## Details
 ### Environment Variables
 | Name                  | Description                     | Default value |
 |-----------------------|---------------------------------|---------------|
-| HEALTHNET_PORT        | The service port                | 8080          |
-| HEALTHNET_DB_USER     | User for the local DB           | root          |
-| HEALTHNET_DB_PASSWORD | Password to access the local DB | root          |
+| SERVICE_PORT        | The service port                | 8080          |
+| DB_USER     | User for the local DB           | root          |
+| DB_PASSWORD | Password to access the local DB | root          |

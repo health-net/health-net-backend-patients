@@ -9,9 +9,10 @@ public class PatientsDataSource extends MysqlDataSource {
 
         Map<String, String> env = System.getenv();
         setDatabaseName(env.getOrDefault("DB_NAME", "healthnet_patients"));
-        setUser(env.getOrDefault("DB_USER", "root"));
         setPassword(env.getOrDefault("DB_PASSWORD", "root"));
         setURL(env.getOrDefault("DB_URL", "bruh"));
         setPort(Integer.parseInt(env.getOrDefault("DB_PORT", "3306")));
+        setUser(env.getOrDefault("DB_USER", "root"));
+        setPassword(env.getOrDefault("DB_PASSWORD", "root"));
     }
 }

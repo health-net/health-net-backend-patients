@@ -6,9 +6,12 @@ import java.util.Map;
 
 public class PatientsDataSource extends MysqlDataSource {
     public PatientsDataSource() {
-        setDatabaseName("healthnet_patients");
+
         Map<String, String> env = System.getenv();
-        setUser(env.getOrDefault("HEALTHNET_DB_USER", "root"));
-        setPassword(env.getOrDefault("HEALTHNET_DB_PASSWORD", "root"));
+        setDatabaseName(env.getOrDefault("DB_NAME", "healthnet_patients"));
+        setUser(env.getOrDefault("DB_USER", "root"));
+        setPassword(env.getOrDefault("DB_PASSWORD", "root"));
+        setURL(env.getOrDefault("DB_URL", "bruh"));
+        setPort(Integer.parseInt(env.getOrDefault("DB_PORT", "3306")));
     }
 }

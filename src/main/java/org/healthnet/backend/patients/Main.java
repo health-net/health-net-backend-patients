@@ -63,7 +63,7 @@ public class Main {
 
         HttpServlet patientsServlet = new PatientsServlet(router);
 
-        int port = Integer.parseInt(System.getenv().getOrDefault("HEALTHNET_PORT", "8080"));
+        int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"));
         ServletContextHandler servletContextHandler = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         servletContextHandler.addServlet(new ServletHolder(patientsServlet), "/patients/*");
         JettyEmbeddedServer server = new JettyEmbeddedServer(port, servletContextHandler);
